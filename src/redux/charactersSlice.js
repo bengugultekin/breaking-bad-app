@@ -10,12 +10,21 @@ export const charactersSlice = createSlice({
     name: 'characters',
     initialState: {
         items: [],
+        isLoading: false,
     },
     reducers: {},
     extraReducers: {
-        [fetchCaracters.fulfilled]: (state, action) => {
-            console.log(action.payload);
+        [fetchCaracters.pending]: (state, action) => {
+            state.isLoading = true;
         },
+        [fetchCaracters.fulfilled]: (state, action) => {
+            state.items = action.payload;
+            state.isLoading = false;
+        },
+        [fetchCaracters.rejected]: (state, action) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        }
     },
 });
 
